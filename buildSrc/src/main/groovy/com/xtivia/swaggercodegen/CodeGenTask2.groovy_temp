@@ -1,0 +1,39 @@
+package com.xtivia.swaggercodegen
+
+import io.swagger.codegen.v3.ClientOptInput
+import io.swagger.codegen.v3.ClientOpts
+import io.swagger.codegen.v3.CodegenConfigLoader
+import io.swagger.codegen.v3.DefaultGenerator
+import io.swagger.v3.parser.OpenAPIV3Parser
+import org.gradle.api.DefaultTask
+import org.gradle.api.tasks.TaskAction
+
+class CodeGenTask extends DefaultTask {
+    
+    PluginExtension swagger
+
+    @TaskAction
+    def swaggerCodeGen() {
+        // Configuration for language
+        def openAPI = new OpenAPIV3Parser().read(swagger.inputSpec)
+        def clientOpts = new ClientOptInput().openAPI(openAPI)
+        def codegenConfig = CodegenConfigLoader.forName(swagger.language)
+
+        // Outputdir + clean
+        codegenConfig.setOutputDir(project.file(swagger.output ?: 'build/generated-sources/swagger').absolutePath)
+        if (swagger.cleanOutputDir == true) {
+        	project.delete(codegenConfig.getOutputDir())
+        }
+        
+        // Add additional properties
+        codegenConfig.additionalProperties()?.putAll(swagger.additionalProperties)
+
+        if (swagger.apis != null) System.setProperty('apis', swagger.apis)
+        if (swagger.models != null) System.setProperty('models', swagger.models)
+        if (swagger.supportingFiles != null) System.setProperty('supportingFiles', swagger.supportingFiles)
+
+        // Client input
+        clientOpts.setOpts(clientOps)
+        new DefaultGenerator().opts(clientOps).generate()
+    }
+}

@@ -1,0 +1,22 @@
+buildscript {
+    repositories {
+        maven {
+            url 'https://repo1.maven.org/maven2'
+        }
+    }
+}
+dependencies {
+    compile files('libs/swagger-codegen-cli.jar'), 
+		    'io.swagger.parser.v3:swagger-parser:2.0.21', 
+		    'com.github.jknack:handlebars:4.2.0',
+		    'io.swagger.core.v3:swagger-models:2.1.4', 
+		    'com.samskivert:jmustache:1.13' ,
+            'com.moowork.gradle:gradle-node-plugin:1.0.0', gradleApi(), localGroovy(), 'com.liferay:com.liferay.gradle.plugins:3.0.59'
+    testCompile 'junit:junit:4.12'
+    testRuntime 'com.google.guava:guava:20.0', 'org.codehaus.plexus:plexus-utils:3.0.24'
+}
+
+repositories {
+    mavenCentral()
+    jcenter()
+}

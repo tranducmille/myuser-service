@@ -1,0 +1,9 @@
+{
+  "name": "security-services",
+  "version": "1.0.0-SNAPSHOT",
+  "description": "Security services OSGI module",
+  "main": "index.js",
+  "scripts": {},
+  "author": "",
+  "license": "ISC"
+}
